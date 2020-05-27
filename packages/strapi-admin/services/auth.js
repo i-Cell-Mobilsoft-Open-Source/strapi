@@ -1,5 +1,16 @@
 const _ = require('lodash');
-const bcrypt = require('bcryptjs');
+const hashText = require('pbkdf2-wrapper/hashText')
+const verifyHash = require('pbkdf2-wrapper/verifyHash')
+
+
+const config = {
+  encoding: 'hex',
+  digest: 'sha512',
+  hashBytes: 16,
+  saltBytes: 32,
+  iterations: 372791
+}
+
 
 const sanitizeUser = user => {
   return _.omit(user.toJSON ? user.toJSON() : user, [
@@ -24,7 +35,7 @@ const createJwtToken = admin => {
  * @param {string} password - password to hash
  * @returns {string} hashed password
  */
-const hashPassword = password => bcrypt.hash(password, 10);
+const hashPassword = async (password) => await hashText(password, config);
 
 /**
  * Validate a password
@@ -32,7 +43,7 @@ const hashPassword = password => bcrypt.hash(password, 10);
  * @param {string} hash
  * @returns {boolean} is the password valid
  */
-const validatePassword = (password, hash) => bcrypt.compare(password, hash);
+const validatePassword = async (password, hash) => await verifyHash(password, hash, config);
 
 module.exports = {
   createJwtToken,

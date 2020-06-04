@@ -92,6 +92,15 @@ module.exports = {
     } else {
       admin.isAdmin = true;
 
+      let loginData = {
+        timeOutSec: parseInt(strapi.plugins['users-permissions'].config.jwt.expiresIn, 10) * 60,
+        token: admin._id
+      }
+
+      loginData = strapi.services.audit.addAuditData(loginData, admin._id);
+
+      await strapi.query('login-history').create(loginData);
+
       ctx.send({
         jwt: strapi.admin.services.auth.createJwtToken(admin),
         user: strapi.admin.services.auth.sanitizeUser(admin),

@@ -201,12 +201,14 @@ module.exports = {
       );
     }
 
-    const user = {
+    let user = {
       email: email,
       username: username,
       blocked: blocked === true ? true : false,
       password: await strapi.admin.services.auth.hashPassword(password),
     };
+
+    user = strapi.admin.services.audit.addAuditData(user, ctx);
 
     const data = await strapi.query('administrator', 'admin').create(user);
 
@@ -285,15 +287,18 @@ module.exports = {
       }
     }
 
-    const user = {
+    let user = {
       email: email,
       username: username,
       blocked: blocked === true ? true : false,
+      version: admin.version
     };
 
     if (password && password !== admin.password) {
       user.password = await strapi.admin.services.auth.hashPassword(password);
     }
+
+    user = strapi.admin.services.audit.addAuditData(user, ctx, false)
 
     const data = await strapi.query('administrator', 'admin').update({ id }, user);
 

@@ -4,6 +4,9 @@
     "name": "Administrator",
     "description": ""
   },
+  "options": {
+    "timestamps": false
+  },
   "attributes": {
     "username": {
       "type": "string",
@@ -34,6 +37,38 @@
       "type": "boolean",
       "default": false,
       "configurable": false
+    },
+    "version": {
+      "type": "integer",
+      "min": 0,
+      "default": 0,
+      "editable": false,
+      "private": true
+    },
+    "insDate": {
+      "description": "insert date of the document",
+      "type": "datetime",
+      "editable": false,
+      "private": true
+    },
+    "insUser": {
+      "description": "insert user of the document (0 for system)",
+      "type": "string",
+      "editable": false,
+      "private": true
+    },
+    "modDate": {
+      "description": "modification date of the document",
+      "type": "datetime",
+      "editable": false,
+      "required": false,
+      "private": true
+    },
+    "modUser": {
+      "description": "modification user of the document (0 for system)",
+      "type": "string",
+      "editable": false,
+      "private": true
     }
   }
 }

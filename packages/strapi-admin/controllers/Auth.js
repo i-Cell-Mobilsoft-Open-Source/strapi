@@ -25,7 +25,7 @@ module.exports = {
         null,
         formatError({
           id: 'Auth.form.error.email.provide',
-          message: 'Please provide your username or your e-mail.',
+          message: 'Kérem, adja meg email címét vagy felhasználói nevét!',
         })
       );
     }
@@ -36,7 +36,7 @@ module.exports = {
         null,
         formatError({
           id: 'Auth.form.error.password.provide',
-          message: 'Please provide your password.',
+          message: 'Kérem, adja meg jelszavát!',
         })
       );
     }
@@ -53,25 +53,17 @@ module.exports = {
       query.username = params.identifier;
     }
 
+    query.blocked = false;
+
     // Check if the admin exists.
     const admin = await strapi.query('administrator', 'admin').findOne(query);
 
     if (!admin) {
-      return ctx.badRequest(
+      return ctx.unauthorized(
         null,
         formatError({
           id: 'Auth.form.error.invalid',
-          message: 'Identifier or password invalid.',
-        })
-      );
-    }
-
-    if (admin.blocked === true) {
-      return ctx.badRequest(
-        null,
-        formatError({
-          id: 'Auth.form.error.blocked',
-          message: 'Your account has been blocked by the administrator.',
+          message: 'Hibás bejelentkezési adatok!',
         })
       );
     }
@@ -82,11 +74,11 @@ module.exports = {
     );
 
     if (!validPassword) {
-      return ctx.badRequest(
+      return ctx.unauthorized(
         null,
         formatError({
           id: 'Auth.form.error.invalid',
-          message: 'Identifier or password invalid.',
+          message: 'Hibás bejelentkezési adatok!',
         })
       );
     } else {

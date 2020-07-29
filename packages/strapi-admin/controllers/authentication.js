@@ -27,6 +27,8 @@ module.exports = {
             msg = 'Hibás bejelentkezési adatok!';
           } else if(error === 'missing credentials') {
             msg = 'Kérem, adja meg email címét és jelszavát!';
+          } else if(error === 'user not active') {
+            msg = 'A felhasználó nem aktiív!';
           }
           return ctx.badRequest(msg);
         }

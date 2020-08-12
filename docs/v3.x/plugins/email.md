@@ -44,7 +44,7 @@ const emailTemplate = {
     Your account is now linked with: <%= user.email %>.`,
   html: `<h1>Welcome on mywebsite.fr!</h1>
     <p>Your account is now linked with: <%= user.email %>.<p>`,
-},
+};
 
 await strapi.plugins.email.services.email.sendTemplatedEmail(
   {
@@ -54,15 +54,13 @@ await strapi.plugins.email.services.email.sendTemplatedEmail(
   emailTemplate,
   {
     user: _.pick(user, ['username', 'email', 'firstname', 'lastname']),
-  },
+  }
 );
 ```
 
 ## Configure the plugin
 
-### Install the provider you want
-
-By default Strapi provides a local email system ([sendmail](https://www.npmjs.com/package/sendmail)). If you want to use a third party to send emails, you need to install the correct provider module. Otherwise you can skip this part and continue to [Configure your provider](#configure-your-provider).
+By default Strapi provides a local email system ([sendmail](https://www.npmjs.com/package/sendmail)). If you want to use a third party to send emails, you need to install the correct provider module. Otherwise you can skip this part and continue to configure your provider.
 
 You can check all the available providers developed by the community on npmjs.org - [Providers list](https://www.npmjs.com/search?q=strapi-provider-email-)
 
@@ -123,6 +121,11 @@ module.exports = ({ env }) => ({
 
 ::: tip
 If you're using a different provider depending on your environment, you can specify the correct configuration in `config/env/${yourEnvironment}/plugins.js`. More info here: [Environments](../concepts/configurations.md#environments)
+:::
+
+::: tip
+When testing the new email provider with one the two templates created during strapi setup, the shipper email used is the one on the template, which is no-reply@strapi.io and it has to be modified to the email used with your email provider, otherwise it will fail the test.
+More info here: [Configure templates Locally](http://localhost:1337/admin/plugins/users-permissions/email-templates)
 :::
 
 ## Create new provider
